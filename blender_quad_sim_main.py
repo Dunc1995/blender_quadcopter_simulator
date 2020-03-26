@@ -1,7 +1,7 @@
 import bpy
 import numpy as np
 from mathutils import Euler
-from math import sin, cos
+from math import sin, cos, pi
 
 quad = bpy.data.objects['QuadFrame']
 
@@ -14,14 +14,14 @@ FRAME_RESOLUTION = round(TIME_STEPS_PER_SECOND/ANIMATION_FRAMES_PER_SECOND) #Use
 class body():
     def __init__(self):
         self.mass = 1 #1kg
-        self.arm_length = 0.6 #60cm
+        self.arm_length = 0.5 #60cm
         self.k = 3e-6
         self.b = 1e-7
         self.inertia_tensor = np.diag(np.array([0.033, 0.033, 0.066]))
         self.positional_state = np.array([
             [0, 0, 0], #x
             [0, 0, 0], #y
-            [1, 0, -0.98] #z
+            [1, 0, 0] #z
             ])
         #print(self.state)
     
@@ -88,34 +88,37 @@ class body():
         return inputs
 
 class controller():
-    def __init__(self, kd = 4, kp = 3, ki = 3, samples_per_second =TIME_STEPS_PER_SECOND):
+    def __init__(self, kd = 3, kp = 3, ki = 0.3, theta_in=np.array([0.0, 0.0, 0.0]), samples_per_second =TIME_STEPS_PER_SECOND):
         # total = state.m * state.g / state.k / ... 
         #     (cos(state.integral(1)) * cos(state.integral(2)))
         self.kd = kd
         self.kp = kp
         self.ki = ki
         self.sample_rate = samples_per_second
-        self.angular_acceleration_reading = np.array([0.0, 0, 0])
-        self.angular_velocity_reading = np.array([0.0, 0, 0])
-        self.angular_displacement_reading = np.array([0.0, 0, 0])
+        #self.angular_velocity_reading = np.array([0.0, 0, 0])
+        self.angular_displacement_reading = theta_in
+        self.angular_displacement_error_reading = np.array([0.0, 0.5, 0])
         
 
     def update(self, thetadot):
-        err = self.kd * thetadot + self.kp * self.angular_velocity_reading + self.ki * self.angular_displacement_reading
+        err = self.kd * thetadot + self.kp * self.angular_displacement_reading + self.ki * self.angular_displacement_error_reading
         print(err)
+        #print(err)
 
-        self.angular_velocity_reading += (thetadot/self.sample_rate)
-        self.angular_displacement_reading += (self.angular_velocity_reading/self.sample_rate)
+        self.angular_displacement_reading += (thetadot/self.sample_rate)
+        self.angular_displacement_error_reading += (self.angular_displacement_reading/self.sample_rate)
         return err
 
 if __name__ == "__main__":
 
     rigid_body = body()
-    controller = controller()
+    theta = np.array([0, 0.5, 0.0])
+    thetadot = np.array([0, 0, 0.0])
+    
+    controller = controller(theta_in=theta)
+    quad.rotation_euler = Euler((theta[0], theta[1], theta[2]), 'ZYX')
+    
     j=0
-    theta = np.array([0, 0, 0.0])
-    thetadot = np.array([0, 0.5, 0.0])
-
     steps = SECONDS_OF_SIMULATION*TIME_STEPS_PER_SECOND    
     for i in range(steps):
         rigid_body.calculate_integrals()
@@ -124,7 +127,7 @@ if __name__ == "__main__":
         error = controller.update(thetadot)
         thrust = rigid_body.get_thrust_from_controller_data(error)
         omega_dot = rigid_body.angular_acceleration(thrust, omega)
-
+        
         omega += (omega_dot/TIME_STEPS_PER_SECOND)
         thetadot = rigid_body.omega2thetadot(omega, theta)
         theta += (thetadot/TIME_STEPS_PER_SECOND)
@@ -134,9 +137,14 @@ if __name__ == "__main__":
             pos = rigid_body.get_position()
             print('Iteration: {} | {}'.format(i, pos))
             # print(theta)
+            # print(theta)
             # print(omega_dot)
             quad.location = (pos[0],pos[1],pos[2])
-            quad.rotation_euler = Euler((theta[0], theta[1], theta[2]), 'ZYX')
+            quad.convert_space(from_space='WORLD', to_space='LOCAL')
+            quad.rotation_euler.rotate_axis("X", thetadot[0])
+            quad.rotation_euler.rotate_axis("Y", thetadot[1])
+            quad.rotation_euler.rotate_axis("Z", thetadot[2])
+            quad.convert_space(from_space='LOCAL', to_space='WORLD')
             quad.keyframe_insert(data_path = "location", frame = j)
             quad.keyframe_insert(data_path = "rotation_euler", frame = j)
             j += 1
