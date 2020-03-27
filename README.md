@@ -6,4 +6,8 @@ Although there are already some fantastic technologies to combine 3D modelling/s
 
 Hence the existence of this project. Whilst at university I remember coming across some MATLAB code that was designed to simulate the flight dynamics of a quadcopter - if you're comfortable with 3D dynamics, I would highly recommend taking a look at the [blog](http://andrew.gibiansky.com/blog/physics/quadcopter-dynamics/) and [repo](https://github.com/gibiansky/experiments/tree/master/quadcopter). This project essentially takes the same setup, but implements it in Python and Blender.
 
-I'm not entirely convinced rotational transforms for angular velocity have been implemented correctly, but I am hoping my brain will eventually understand what's going wrong.
+I'm not entirely convinced the rotational transforms for angular velocity have been implemented correctly, but I am hoping my brain will eventually understand what's going wrong; Euler angles still confuse the hell out of me despite having studied Dynamics throughout university.
+
+## Preview
+This is still very much a work in progress:
+![](images/example_1.gif)
