@@ -9,5 +9,5 @@ Hence the existence of this project. Whilst at university I remember coming acro
 I'm not entirely convinced the rotational transforms for angular velocity have been implemented correctly, but I am hoping my brain will eventually understand what's going wrong; Euler angles still confuse the hell out of me despite having studied Dynamics throughout university.
 
 ## Preview
-This is still very much a work in progress:
+This is still very much a work in progress:  
 ![](images/example_1.gif)
