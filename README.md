@@ -18,6 +18,5 @@ This is still very much a work in progress:
 ## References
 Proof that I somewhat know what I'm talking about:  
 
-<p align="center">
-[ ![](https://img.youtube.com/vi/0cZRwyJe5yo/0.jpg) ](https://www.youtube.com/watch?v=0cZRwyJe5yo "Click to play on Youtube")
-</p>
+[![](https://img.youtube.com/vi/0cZRwyJe5yo/0.jpg)](https://www.youtube.com/watch?v=0cZRwyJe5yo "Click to play on Youtube")
+
