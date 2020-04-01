@@ -19,5 +19,5 @@ This is still very much a work in progress:
 Proof that I somewhat know what I'm talking about:  
 
 <p align="center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/0cZRwyJe5yo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+[ ![](https://img.youtube.com/vi/0cZRwyJe5yo/0.jpg) ](https://www.youtube.com/watch?v=0cZRwyJe5yo "Click to play on Youtube")
 </p>
