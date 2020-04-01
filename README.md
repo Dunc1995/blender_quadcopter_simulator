@@ -11,9 +11,7 @@ I'm not entirely convinced the rotational transforms for angular velocity have b
 ## Preview
 This is still very much a work in progress: 
 
-<p align="center">
-<img src="images/example_1.gif">
-</p>
+![](images/example_1.gif)
 
 ## References
 Proof that I somewhat know what I'm talking about:  
