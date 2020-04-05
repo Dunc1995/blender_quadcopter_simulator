@@ -19,12 +19,12 @@ class quadcopter():
         self.positional_state = np.array([
             [0, 0, 0], #x
             [0, 0, 0], #y
-            [1, 0, -9.81] #z
+            [1, 0, 0] #z
             ])
 
         #TODO MAKE TIDIER!
         self.euler_angles = np.array([0, 0, 0.0])
-        self.euler_angle_time_derivatives = np.array([0.05, 0.05, 0]) #! Don't leave this default-ed to non zero values!
+        self.euler_angle_time_derivatives = np.array([0.05, 0.05, 0.01]) #! Don't leave this default-ed to non zero values!
         self.angular_velocity = None
         self.angular_acceleration = None
         self.__current_rotation_matrix = self.__set_rotation_matrix()
@@ -39,7 +39,7 @@ class quadcopter():
             row[0] += (row[1] / t) #positional element
         #TODO MAKE TIDIER! Above and below in this method could be improved.
         self.angular_velocity = self.get_omega_vector(self.euler_angle_time_derivatives, self.euler_angles)
-        error_signal = self.controller.update_controller_state(self.euler_angle_time_derivatives)
+        error_signal = self.controller.update_controller_state(self.angular_velocity)
         linear_thrust = self.get_thrust_from_controller_data(error_signal)
         self.angular_acceleration = self.get_angular_acceleration_vector(linear_thrust, self.angular_velocity)
         
@@ -75,7 +75,7 @@ class quadcopter():
         tau = np.array([
             self.arm_length * self.k * (inputs[0] - inputs[2]),
             self.arm_length * self.k * (inputs[1] - inputs[3]),
-            self.b * (inputs[0] - inputs[1] + inputs[2] - inputs[3])
+            self.b * (inputs[0] - inputs[1] + inputs[2] - inputs[3]) * 0
         ])
         return tau
 
@@ -91,6 +91,7 @@ class quadcopter():
         L = self.arm_length
         b = self.b
 
+        #! This is unlikely correct
         #TODO readd total/4 for countering gravity.
         inputs = np.array([0, 0, 0, 0])
         inputs[0] = -(2 * b * e1 * Ix + e3 * Iz * k * L)/(4 * b * k * L)
