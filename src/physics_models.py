@@ -27,6 +27,7 @@ class quadcopter():
         self.euler_angle_time_derivatives = np.array([0.05, 0.05, 0]) #! Don't leave this default-ed to non zero values!
         self.angular_velocity = None
         self.angular_acceleration = None
+        self.__current_rotation_matrix = self.__set_rotation_matrix()
         #print(self.state)
     
     def update_state(self):
@@ -45,6 +46,7 @@ class quadcopter():
         self.angular_velocity += (self.angular_acceleration/t)
         self.euler_angle_time_derivatives = self.get_euler_angle_time_derivatives_vector(self.angular_velocity, self.euler_angles)
         self.euler_angles += (self.euler_angle_time_derivatives/t)
+        self.__set_rotation_matrix()
     
     def get_position(self):
         '''Returns the XYZ coordinates of the rigid body.'''
@@ -108,3 +110,14 @@ class quadcopter():
             [0, -sin(phi), cos(theta)*cos(phi)]
         ])
         return w
+
+    def __set_rotation_matrix(self):
+        phi = self.euler_angles[2]
+        theta = self.euler_angles[1]
+        psi = self.euler_angles[0]
+
+        self.__current_rotation_matrix = np.array([
+        [cos(phi)*cos(theta), cos(theta)*sin(phi), -sin(theta)],
+        [cos(phi)*sin(theta)*sin(psi) - cos(psi)*sin(phi), cos(phi)*cos(psi) + sin(phi)*sin(theta)*sin(psi), cos(theta)*sin(psi)], 
+        [sin(phi)*sin(psi) + cos(phi)*cos(psi)*sin(theta), cos(psi)*sin(phi)*sin(theta) - cos(phi)*sin(psi), cos(theta) * cos(psi)]
+        ])
