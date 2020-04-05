@@ -19,7 +19,7 @@ class quadcopter():
         self.positional_state = np.array([
             [0, 0, 0], #x
             [0, 0, 0], #y
-            [1, 0, 0] #z
+            [1, 0, -9.81] #z
             ])
 
         #TODO MAKE TIDIER!
