@@ -10,6 +10,12 @@ def run_simulation():
     x_position_array = []
     y_position_array = []
     z_position_array = []
+    # x_ang_vel = []
+    # y_ang_vel = []
+    # z_ang_vel = []
+    x_eul_vel = []
+    y_eul_vel = []
+    z_eul_vel = []
 
     with open('output.csv', 'w+') as f:
         for i in range(steps):
@@ -25,6 +31,12 @@ def run_simulation():
                 x_position_array.append(pos[0])
                 y_position_array.append(pos[1])
                 z_position_array.append(pos[2])
+                # x_ang_vel.append(rigid_body.angular_velocity[0])
+                # y_ang_vel.append(rigid_body.angular_velocity[1])
+                # z_ang_vel.append(rigid_body.angular_velocity[2])
+                # x_eul_vel.append(rigid_body.euler_angles[0])
+                # y_eul_vel.append(rigid_body.euler_angles[1])
+                # z_eul_vel.append(rigid_body.euler_angles[2])
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -32,6 +44,14 @@ def run_simulation():
     ax.set_xlabel('X (m)')
     ax.set_ylabel('Y (m)')
     ax.set_zlabel('Z (m)')
+
+    # plt.plot(x_ang_vel)
+    # plt.plot(y_ang_vel)
+    # plt.plot(z_ang_vel)
+    # plt.grid(color='b', linestyle='-', linewidth=0.1)
+    # plt.plot(x_eul_vel)
+    # plt.plot(y_eul_vel)
+    # plt.plot(z_eul_vel)
     plt.show()
 
 if __name__ == "__main__":
