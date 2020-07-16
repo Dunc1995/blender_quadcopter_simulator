@@ -24,7 +24,7 @@ class quadcopter():
 
         #TODO MAKE TIDIER!
         self.euler_angles = np.array([0, 0, 0.0])
-        self.euler_angle_time_derivatives = np.array([0.05, 0.035, 0.0]) #! Don't leave this default-ed to non zero values!
+        self.euler_angle_time_derivatives = np.array([0.2, 0.1, 0.0]) #! Don't leave this default-ed to non zero values!
         self.angular_velocity = None
         self.angular_acceleration = None
         self.__current_rotation_matrix = self.__set_rotation_matrix()
@@ -110,7 +110,7 @@ class quadcopter():
         return inputs
 
     def get_linear_acceleration_vector(self, sum_thrust):
-        kd = 0.05
+        kd = 0.01
         gravity = np.array([0, 0, -9.81])
         body_frame_thrust = np.array([0, 0, sum_thrust])
         global_thrust_vector = self.__current_rotation_matrix.dot(body_frame_thrust)
