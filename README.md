@@ -7,7 +7,7 @@ Whilst at university I remember coming across some MATLAB code that was designed
 ## Preview
 This is still very much a work in progress: 
 
-![](images/example_1.gif)
+![](images/example_2.gif)
 
 ## References
 Real life implementation:  
